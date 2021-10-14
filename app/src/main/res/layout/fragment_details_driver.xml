@@ -12,8 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/primaryColor"
-            android:textSize="21sp"
+
+            android:textSize="25sp"
             android:gravity="start"
             android:text="Detalles del conductor"
             android:id="@+id/txtTitleDetailsDriver"/>
@@ -24,9 +24,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="20dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
                 android:src="@mipmap/ic_launcher_round"
                 android:id="@+id/imgDriver"/>
 
@@ -66,8 +66,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="8"
+
                 android:visibility="visible"
-                android:background="@color/secondaryColor"
+                android:background="@color/primaryColor"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -75,6 +76,7 @@
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:gravity="center"
+                    android:textColor="@color/white"
                     android:text="Chat"
                     android:id="@+id/txtTitleLabelChat"/>
             <ImageView
@@ -92,8 +94,8 @@
         <View
 
             android:layout_width="match_parent"
-
-            android:layout_height="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="3dp"
             android:background="@color/primaryColor"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,8 +107,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="@color/primaryColor"
-                android:textSize="21sp"
+                android:layout_marginBottom="5dp"
+                android:textSize="25sp"
                 android:gravity="start"
                 android:text="Detalles del auto"
                 android:id="@+id/txtTitleDetailsAutoDriver"/>
@@ -115,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="14XCV23"
                 android:id="@+id/txtPlacasAutoDriver"/>
@@ -125,6 +128,7 @@
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:gravity="center"
+                android:layout_margin="5dp"
                 android:text="Nissan Mazda"
                 android:id="@+id/txtBrandModelAutoDriver"/>
             <TextView
@@ -132,6 +136,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="Naranja"
                 android:id="@+id/txtColorAutoDriver"/>
@@ -148,8 +153,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="@color/primaryColor"
-                android:textSize="21sp"
+                android:layout_marginBottom="5dp"
+                android:textSize="25sp"
                 android:gravity="start"
                 android:text="Detalles del viaje"
                 android:id="@+id/txtTitleDetailsService"/>
@@ -157,6 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
+                android:layout_margin="5dp"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:text="De Antonio Barona Cuernavaca"
@@ -167,6 +173,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="Para UTEZ Emiliano Zapata"
                 android:id="@+id/txtDestinationService"/>
@@ -194,6 +201,7 @@
             android:text="Cancelar servicio"
             android:layout_weight="5"
             android:layout_margin="10dp"
+            android:backgroundTint="#e63946"
             android:visibility="visible"
             android:layout_marginTop="30dp"
             android:textSize="20sp"
@@ -206,6 +214,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_weight="5"
+
             android:text="Terminar trayecto"
             android:layout_margin="10dp"
             android:layout_marginTop="30dp"

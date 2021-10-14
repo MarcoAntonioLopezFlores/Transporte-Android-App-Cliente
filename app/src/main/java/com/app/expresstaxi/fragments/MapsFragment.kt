@@ -64,8 +64,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
 
 
         btnRequestService.setOnClickListener{
+
             bottomSheetFragment.show(childFragmentManager,"bottomSheetFindDriver")
 
+            //bottomSheetFragment.dismiss()
         }
     }
 

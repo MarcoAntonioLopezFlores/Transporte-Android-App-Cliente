@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/bottomSheet"
-    android:background="@color/white"
+
     android:orientation="vertical">
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
 android:gravity="center"
         android:text="@string/searching_driver"
-        android:textColor="@color/black"
+
         android:layout_margin="20dp"
         android:textSize="30sp"/>
 
@@ -19,6 +19,8 @@ android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:textColor="@color/white"
+        android:backgroundTint="#e63946"
         android:id="@+id/btnCancelFindDriver"
         android:text="@string/cancel"
         />

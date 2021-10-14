@@ -176,6 +176,7 @@
                 android:text="@string/cancel"
                 android:layout_margin="10dp"
                 android:textSize="20sp"
+                android:backgroundTint="#e63946"
                 android:padding="15dp"
                 android:gravity="center"
                 android:id="@+id/btnCancelRegister"/>
