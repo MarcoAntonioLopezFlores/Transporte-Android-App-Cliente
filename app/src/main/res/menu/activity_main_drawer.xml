@@ -7,6 +7,12 @@
 
         <item
             android:id="@+id/mapsFragment"
+            android:icon="@drawable/ic_map"
             android:title="Inicio" />
+
+        <item
+            android:id="@+id/myServicesTakenFragment"
+            android:icon="@drawable/car"
+            android:title="Mis servicios" />
     </group>
 </menu>

@@ -9,6 +9,51 @@
         android:id="@+id/mapsFragment"
         android:name="com.app.expresstaxi.fragments.MapsFragment"
         android:label="Inicio"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.app.expresstaxi.fragments.DetailsDriverFragment"
+        android:label="Detalles servicio"
+        tools:layout="@layout/fragment_details_driver" >
+        <action
+            android:id="@+id/action_detailsFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_calificationServiceFragment"
+            app:destination="@id/calificationServiceFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_chatServiceFragment"
+            app:destination="@id/chatServiceFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calificationServiceFragment"
+        android:name="com.app.expresstaxi.fragments.CalificationServiceFragment"
+        android:label="Calificación del servicio"
+        tools:layout="@layout/fragment_calification_service" >
+
+        <action
+            android:id="@+id/action_calificationServiceFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatServiceFragment"
+        android:name="com.app.expresstaxi.fragments.ChatServiceFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat_service" >
+        <action
+            android:id="@+id/action_chatServiceFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myServicesTakenFragment"
+        android:name="com.app.expresstaxi.fragments.MyServicesTakenFragment"
+        android:label="Mis servicios"
+        tools:layout="@layout/fragment_my_services_taken" />
 
 </navigation>
