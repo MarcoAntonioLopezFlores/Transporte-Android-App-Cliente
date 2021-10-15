@@ -5,7 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.expresstaxi.R
+import com.app.expresstaxi.adapters.MessageAdapter
+import com.app.expresstaxi.models.Message
+import kotlinx.android.synthetic.main.fragment_chat_service.*
+import kotlinx.android.synthetic.main.fragment_chat_service.view.*
 
 
 class ChatServiceFragment : Fragment() {
@@ -15,8 +21,26 @@ class ChatServiceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat_service, container, false)
+        val viewRoot =inflater.inflate(R.layout.fragment_chat_service, container, false)
+
+        val messageList = ArrayList<Message>()
+        viewRoot.recyclerViewChat.layoutManager= LinearLayoutManager(context)
+        messageList.add(Message("Hola","A12S3X",1))
+        messageList.add(Message("Adios","xaxaxa",2))
+        var myAdapterMessage = activity?.let {
+            MessageAdapter(it,messageList)
+        }
+
+        viewRoot.recyclerViewChat.adapter=myAdapterMessage
+
+        myAdapterMessage!!.notifyDataSetChanged()
+        viewRoot.btnSendMessage.setOnClickListener{
+            Toast.makeText(context, "Mensaje", Toast.LENGTH_SHORT).show()
+        }
+        return viewRoot
+
     }
 
 
 }
+

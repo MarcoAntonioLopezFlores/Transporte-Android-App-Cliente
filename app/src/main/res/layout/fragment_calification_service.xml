@@ -3,11 +3,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.CalificationServiceFragment">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:gravity="center"
+    android:orientation="vertical">
     <TextView
+        android:id="@+id/txtTitleThanks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="GRACIAS POR TOMAR ESTE SERVICIO"
+        android:textSize="24sp"
+        android:textAlignment="center"/>
+
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:id="@+id/ratingBarCalificationService"
+        android:rating="0"
+        android:max="5"
+        app:mrb_progressTint="@color/primaryLightColor"
+        app:mrb_secondaryProgressTint="@color/primaryColor"
+        style="@style/Widget.MaterialRatingBar.RatingBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="Calificación" />
+        android:layout_height="match_parent"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/edtCommentCalification"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="Comentarios"
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:textColor="@color/primaryTextColor"
+        android:textColorHint="@color/primaryTextColor"
+        android:textSize="18sp"
+        app:met_baseColor="@color/primaryTextColor"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/primaryTextColor"
+        app:met_singleLineEllipsis="false" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSubmitCalification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Calificar"
+        android:textStyle="bold"/>
+</LinearLayout>
 </androidx.core.widget.NestedScrollView>

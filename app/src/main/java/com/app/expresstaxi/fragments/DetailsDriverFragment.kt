@@ -27,6 +27,7 @@ class DetailsDriverFragment:Fragment() {
             viewRoot.btnStartService.visibility = View.GONE
             viewRoot.btnFinishService.visibility = View.VISIBLE
             viewRoot.btnCancelService.visibility = View.GONE
+            viewRoot.containerBtnChatService.visibility = View.VISIBLE
         }
 
         viewRoot.btnCancelService.setOnClickListener{

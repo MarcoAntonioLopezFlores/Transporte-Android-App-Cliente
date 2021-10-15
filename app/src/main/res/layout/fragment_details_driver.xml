@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
 
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.DetailsDriverFragment">
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:orientation="vertical">
 
                 <TextView
@@ -65,27 +66,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="8"
-
-                android:visibility="visible"
-                android:background="@color/primaryColor"
+                android:id="@+id/containerBtnChatService"
+                android:layout_weight="6"
+                android:visibility="gone"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
+                    app:iconGravity="textTop"
+                    app:icon="@drawable/ic_menu_send"
                     android:text="Chat"
-                    android:id="@+id/txtTitleLabelChat"/>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnChatService"
-                android:src="@drawable/ic_menu_send"/>
-            </LinearLayout>
+                    android:visibility="visible"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:textSize="10sp"
+                    android:id="@+id/btnChatService"/>
 
+            </LinearLayout>
         </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -205,6 +202,7 @@
             android:visibility="visible"
             android:layout_marginTop="30dp"
             android:textSize="20sp"
+
             android:padding="15dp"
             android:gravity="center"
             android:id="@+id/btnCancelService"/>

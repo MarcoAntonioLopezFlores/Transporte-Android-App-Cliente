@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener{
 
             startActivity(Intent(this, NavigationDrawer::class.java))
+            finish()
         }
     }
 
