@@ -17,7 +17,7 @@ import com.app.expresstaxi.R
 import com.app.expresstaxi.databinding.ActivityNavigationDrawerBinding
 import kotlinx.android.synthetic.main.activity_navigation_drawer.view.*
 
-class NavigationDrawer : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class NavigationDrawer : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityNavigationDrawerBinding
@@ -34,8 +34,7 @@ class NavigationDrawer : AppCompatActivity(), NavigationView.OnNavigationItemSel
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_container)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.mapsFragment, R.id.myServicesTakenFragment
@@ -44,16 +43,13 @@ class NavigationDrawer : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        navView.setNavigationItemSelectedListener(this)
-    }
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        when (id) {
-            R.id.nav_signOut -> signOut()
+        navView.menu.findItem(R.id.nav_signOut).setOnMenuItemClickListener {
+            signOut()
+            true
         }
-
-        return true
+        //navView.setNavigationItemSelectedListener(this)
     }
+
    /* override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.activity_main_drawer, menu)
