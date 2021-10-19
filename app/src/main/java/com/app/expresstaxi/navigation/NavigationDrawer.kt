@@ -65,4 +65,6 @@ class NavigationDrawer : AppCompatActivity() {
         startActivity(Intent(applicationContext,LoginActivity::class.java))
         finish()
     }
+
+
 }
