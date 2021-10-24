@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.app.expresstaxi.LoginActivity
 import com.app.expresstaxi.R
+import com.app.expresstaxi.fragments.ChatServiceFragment
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -38,7 +39,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showNotification(mensaje:String){
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, ChatServiceFragment::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                 or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 

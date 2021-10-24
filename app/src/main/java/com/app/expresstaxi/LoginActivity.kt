@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.app.expresstaxi.navigation.NavigationDrawer
 import com.app.expresstaxi.utils.LocationService
+import com.app.expresstaxi.utils.locationback.LocationBack
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -25,8 +26,8 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener{
             getToken()
-            startActivity(Intent(this, NavigationDrawer::class.java))
-
+            //startActivity(Intent(this, NavigationDrawer::class.java))
+            startActivity(Intent(this, LocationBack::class.java))
             finish()
         }
     }
