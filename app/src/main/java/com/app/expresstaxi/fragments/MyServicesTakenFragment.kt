@@ -28,7 +28,7 @@ class MyServicesTakenFragment : Fragment() {
         val viewRoot = inflater.inflate(R.layout.fragment_my_services_taken, container, false)
 
         fillData(viewRoot)
-        viewRoot.listMyServices.setOnItemClickListener { adapterView, view, i, l ->
+        viewRoot.listMyServices.setOnItemClickListener { _, _, i, _ ->
             Toast.makeText(context, services[i].nameDriver, Toast.LENGTH_SHORT).show()
         }
         return  viewRoot

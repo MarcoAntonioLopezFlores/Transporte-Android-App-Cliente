@@ -42,10 +42,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity
-            android:name=".utils.locationback.LocationBack"
-            android:exported="true"
-            android:theme="@style/Theme.ExpressTaxi.NoActionBar" />
+
         <activity
             android:name=".RegisterActivity"
             android:exported="true"
@@ -95,7 +92,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:value="@mipmap/ic_launcher" />
+            android:value="@mipmap/ic_launcher_foreground" />
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />

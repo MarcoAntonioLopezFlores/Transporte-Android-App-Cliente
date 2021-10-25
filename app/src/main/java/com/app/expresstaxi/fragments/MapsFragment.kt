@@ -5,13 +5,11 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -22,13 +20,8 @@ import kotlinx.android.synthetic.main.fragment_maps.view.*
 import java.util.*
 import android.content.Intent
 import android.net.Uri
-import android.widget.LinearLayout
-import android.widget.Toast
 import com.app.expresstaxi.R
 import com.app.expresstaxi.utils.LocationService
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.bottom_sheet_find_driver.*
-
 
 class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener{
     private lateinit var mMap: GoogleMap

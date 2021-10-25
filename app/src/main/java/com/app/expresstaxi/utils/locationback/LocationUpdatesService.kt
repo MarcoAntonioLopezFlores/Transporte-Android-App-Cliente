@@ -8,7 +8,6 @@ import android.location.Location
 import android.os.*
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.app.expresstaxi.SplashScreen
 import com.app.expresstaxi.navigation.NavigationDrawer
 import com.google.android.gms.location.*
 
@@ -78,7 +77,7 @@ class LocationUpdatesService: Service() {
         mChangingConfiguration = true
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
 
         stopForeground(true)
         mChangingConfiguration = false
@@ -121,7 +120,7 @@ class LocationUpdatesService: Service() {
     }
 
 
-    fun removeLocationUpdates() {
+    private fun removeLocationUpdates() {
 
         try {
             mFusedLocationClient!!.removeLocationUpdates(mLocationCallback)
@@ -134,7 +133,7 @@ class LocationUpdatesService: Service() {
     }
 
     private val notification: Notification
-        private get() {
+        get() {
             val intent = Intent(this, LocationUpdatesService::class.java)
 
             intent.putExtra(EXTRA_STARTED_FROM_NOTIFICATION, true)

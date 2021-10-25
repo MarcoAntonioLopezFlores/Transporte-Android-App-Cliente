@@ -8,7 +8,6 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.app.expresstaxi.LoginActivity
 import com.app.expresstaxi.R
 import com.app.expresstaxi.fragments.ChatServiceFragment
 import com.google.firebase.messaging.FirebaseMessagingService

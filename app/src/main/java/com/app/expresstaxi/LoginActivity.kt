@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.TextView
 import com.app.expresstaxi.navigation.NavigationDrawer
 import com.app.expresstaxi.utils.LocationService
-import com.app.expresstaxi.utils.locationback.LocationBack
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -15,7 +14,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        startService(Intent(this, LocationService::class.java))
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnToRegister = findViewById<TextView>(R.id.txtSignup)
 
@@ -26,13 +24,13 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener{
             getToken()
-            //startActivity(Intent(this, NavigationDrawer::class.java))
-            startActivity(Intent(this, LocationBack::class.java))
+            startService(Intent(this, LocationService::class.java))
+            startActivity(Intent(this, NavigationDrawer::class.java))
             finish()
         }
     }
 
-    fun getToken(){
+    private fun getToken(){
         FirebaseMessaging.getInstance().isAutoInitEnabled = true
 
         FirebaseMessaging.getInstance().token.
@@ -43,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             val token = it.result
-            println("token -> "+token)
+            println("token -> $token")
         })
     }
 

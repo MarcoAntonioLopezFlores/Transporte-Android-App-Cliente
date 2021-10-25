@@ -8,8 +8,6 @@ import com.app.expresstaxi.adapters.MessageAdapter
 import com.app.expresstaxi.models.Message
 import kotlinx.android.synthetic.main.fragment_chat_service.*
 
-
-
 class ChatServiceFragment : AppCompatActivity() {
     private val messageList = ArrayList<Message>()
     private  lateinit var messageAdapter:MessageAdapter

@@ -28,8 +28,6 @@ public class LocationService extends Service {
         @Override
         public void onLocationChanged(@NonNull Location location) {
             loc = location;
-            //System.out.println("Latitud " + location.getLatitude());
-            //System.out.println("Longitud " + location.getLongitude());
 
             myLocation.set(location);
         }

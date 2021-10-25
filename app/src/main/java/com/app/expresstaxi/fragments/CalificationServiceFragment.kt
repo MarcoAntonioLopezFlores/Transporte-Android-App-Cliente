@@ -2,12 +2,7 @@ package com.app.expresstaxi.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.app.expresstaxi.LoginActivity
 import com.app.expresstaxi.R
 import com.app.expresstaxi.navigation.NavigationDrawer
 import kotlinx.android.synthetic.main.fragment_calification_service.*
