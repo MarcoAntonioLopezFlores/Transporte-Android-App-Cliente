@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,7 +10,9 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        tools:ignore="UselessParent">
         <LinearLayout
 android:layout_weight="1"
             android:orientation="vertical"
@@ -22,10 +25,10 @@ android:layout_weight="1"
 
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:text="5/10/21 7:10 a.m."/>
+                android:text="@string/date_service"/>
             <TextView
                 android:id="@+id/txtDriverAutoIdService"
-                android:text="PTYI265J"
+                android:text="@string/id_auto"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +43,7 @@ android:layout_weight="1"
             <TextView
                 android:id="@+id/txtDriverNameService"
                 android:textAlignment="center"
-                android:text="Marco López"
+                android:text="@string/name_driver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />

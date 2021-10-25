@@ -39,7 +39,7 @@
         android:id="@+id/txtTitleThanks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="GRACIAS POR TOMAR ESTE SERVICIO"
+        android:text="@string/thank_him"
         android:textSize="24sp"
         android:textAlignment="center"/>
 
@@ -58,7 +58,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Comentarios"
+        android:hint="@string/comments"
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:textColor="@color/primaryTextColor"
@@ -73,7 +73,7 @@
         android:id="@+id/btnSubmitCalification"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Calificar"
+        android:text="@string/calificate"
         android:textStyle="bold"/>
     </LinearLayout>
 </LinearLayout>
