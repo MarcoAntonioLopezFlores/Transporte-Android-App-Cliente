@@ -20,14 +20,17 @@ import kotlinx.android.synthetic.main.fragment_maps.view.*
 import java.util.*
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import com.app.expresstaxi.R
 import com.app.expresstaxi.utils.LocationService
+import java.lang.Exception
 
 class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener{
     private lateinit var mMap: GoogleMap
     private lateinit var _latDestination:String
     private lateinit var _longDestination:String
-
+    private var isLocationOriginConfirm = false
+    private var isLocationToArriveConfirm= false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,9 +46,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
             mMap.moveCamera(CameraUpdateFactory.newLatLng(punto))
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(punto,16.0f))
         }
-        viewRoot.btnSearchDirection.setOnClickListener{
-            findLocation(edtAddressToArrive.text.toString())
-        }
+
         return viewRoot
     }
 
@@ -55,26 +56,82 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
         mapFragment?.getMapAsync(this)
         val bottomSheetFragment = BottomSheetFindDriverFragment()
 
+        btnSearchDirectionOrigin.setOnClickListener{
+            if(edtAddressOrigin.text.toString().trim().isNotEmpty()){
+                findLocation(edtAddressOrigin.text.toString())
+            }else{
+                Toast.makeText(context, "Es necesario ingresar una dirección", Toast.LENGTH_SHORT).show()
+            }
+        }
+        btnSearchDirectionToArrive.setOnClickListener{
+            if(edtAddressToArrive.text.toString().trim().isNotEmpty()){
+                findLocation(edtAddressToArrive.text.toString())
+            }else{
+                Toast.makeText(context, "Es necesario ingresar una dirección", Toast.LENGTH_SHORT).show()
+            }
 
-        btnRequestService.setOnClickListener{
+        }
+        btnConfirmDirection.setOnClickListener {
+            if(!isLocationOriginConfirm){
+                isLocationOriginConfirm = true
+                ll_destination_place.visibility = View.VISIBLE
+                btnCancelDirectionOrigin.visibility = View.VISIBLE
+                btnSearchDirectionOrigin.visibility = View.GONE
+                edtAddressOrigin.isEnabled = false
+            }else{
+                isLocationToArriveConfirm = true
+                btnConfirmDirection.visibility = View.GONE
+                btnRequestService.visibility = View.VISIBLE
+                btnCancelDirectionToArrive.visibility = View.VISIBLE
+                btnSearchDirectionToArrive.visibility = View.GONE
+                edtAddressToArrive.isEnabled = false
 
-            bottomSheetFragment.show(childFragmentManager,"bottomSheetFindDriver")
+            }
+        }
 
-            //bottomSheetFragment.dismiss()
+        btnCancelDirectionOrigin.setOnClickListener{
+            ll_destination_place.visibility = View.GONE
+            btnCancelDirectionOrigin.visibility = View.GONE
+            btnSearchDirectionOrigin.visibility = View.VISIBLE
+            isLocationOriginConfirm = false
+            edtAddressOrigin.isEnabled = true
+        }
+
+        btnCancelDirectionToArrive.setOnClickListener{
+            isLocationToArriveConfirm = false
+            btnConfirmDirection.visibility = View.VISIBLE
+            btnRequestService.visibility = View.GONE
+            btnCancelDirectionToArrive.visibility = View.GONE
+            btnSearchDirectionToArrive.visibility = View.VISIBLE
+            edtAddressToArrive.isEnabled = true
+        }
+
+        btnRequestService.setOnClickListener {
+            if(edtAddressOrigin.text.toString().trim().isNotEmpty() && edtAddressToArrive.text.toString().trim().isNotEmpty()){
+                bottomSheetFragment.show(childFragmentManager, "bottomSheetFindDriver")
+            }else{
+                Toast.makeText(context, "Es necesario ingresar 2 direcciones para solicitar un servicio", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
     private fun findLocation(direccion:String){
-        val geocoder = Geocoder(activity, Locale.getDefault())
+        try{
+            val geocoder = Geocoder(activity, Locale.getDefault())
 
-        val address = geocoder.getFromLocationName(direccion,5)
+            val address = geocoder.getFromLocationName(direccion,5)
 
-        println("Lat: "+ address[0].latitude)
-        println("Long: "+address[0].longitude)
+            println("Lat: "+ address[0].latitude)
+            println("Long: "+address[0].longitude)
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(address[0].latitude,address[0].longitude)))
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(address[0].latitude,address[0].longitude)))
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(address[0].latitude,address[0].longitude),16.0f))
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(address[0].latitude,address[0].longitude),16.0f))
+        }catch (e:Exception){
+            Toast.makeText(context, "Es necesario ingresar una dirección valida", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun findLatLong(latitud:Double, longitud:Double){
@@ -83,8 +140,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
         val address = geocoder.getFromLocation(latitud,longitud, 5)
 
         if(address.size>0){
-            edtAddressToArrive.setText(address[0].getAddressLine(0))
-
+            if(isLocationOriginConfirm){
+                edtAddressToArrive.setText(address[0].getAddressLine(0))
+            }else{
+                edtAddressOrigin.setText(address[0].getAddressLine(0))
+            }
         }
     }
 
@@ -112,11 +172,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
         mMap.isMyLocationEnabled=true
 
         mMap.setOnCameraIdleListener {
-            val lat = mMap.cameraPosition.target.latitude
-            val long = mMap.cameraPosition.target.longitude
-            _latDestination=lat.toString()
-            _longDestination=long.toString()
-            findLatLong(lat,long)
+            if(edtAddressToArrive.isEnabled){
+                val lat = mMap.cameraPosition.target.latitude
+                val long = mMap.cameraPosition.target.longitude
+                _latDestination=lat.toString()
+                _longDestination=long.toString()
+                findLatLong(lat,long)
+            }
+
         }
     }
 

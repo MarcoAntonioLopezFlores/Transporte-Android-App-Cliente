@@ -47,6 +47,49 @@
                         android:contentDescription="@string/location_origin"
                         tools:ignore="NestedWeights" />
                     <EditText
+                        android:id="@+id/edtAddressOrigin"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Origen"
+                        android:importantForAutofill="no"
+                        android:inputType="textMultiLine" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:layout_weight="1"
+                        android:src="@mipmap/ic_search"
+                        android:id="@+id/btnSearchDirectionOrigin"
+                        android:contentDescription="@string/ic_search" />
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#e63946"
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:src="@mipmap/ic_clear"
+                        android:id="@+id/btnCancelDirectionOrigin"
+                        android:contentDescription="@string/ic_search" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_destination_place"
+                    android:layout_weight="4"
+                    android:visibility="gone"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_location_drop"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/location_origin"
+                        tools:ignore="NestedWeights" />
+                    <EditText
                         android:id="@+id/edtAddressToArrive"
                         android:layout_weight="5"
                         android:layout_width="0dp"
@@ -57,19 +100,22 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
+                        android:visibility="visible"
                         android:layout_weight="1"
-                        android:src="@mipmap/ic_location"
-                        android:id="@+id/btnCenterLocalization"
-                        android:contentDescription="@string/findmyloc"/>
+                        android:src="@mipmap/ic_search"
+                        android:id="@+id/btnSearchDirectionToArrive"
+                        android:contentDescription="@string/ic_search" />
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
+                        android:backgroundTint="#e63946"
+                        android:visibility="gone"
                         android:layout_weight="1"
-                        android:src="@mipmap/ic_search"
-                        android:id="@+id/btnSearchDirection"
+                        android:src="@mipmap/ic_clear"
+                        android:id="@+id/btnCancelDirectionToArrive"
                         android:contentDescription="@string/ic_search" />
+
+
                 </LinearLayout>
 
 
@@ -79,20 +125,45 @@
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pickup_service"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_my_loc_clear"
+            android:id="@+id/btnCenterLocalization"
+            android:layout_margin="10dp"/>
+
+        <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            android:visibility="visible"
+        android:text="@string/confirmar_origin"
         android:layout_margin="10dp"
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:padding="15dp"
         android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/btnRequestService"/>
+        android:id="@+id/btnConfirmDirection"/>
 
-
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pickup_service"
+            android:layout_margin="10dp"
+            android:layout_marginTop="30dp"
+            android:textSize="20sp"
+            android:padding="15dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:id="@+id/btnRequestService"/>
+    </LinearLayout>
     <ImageView
         android:layout_width="30dp"
         android:layout_height="40dp"

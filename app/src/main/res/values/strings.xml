@@ -51,4 +51,5 @@
     <string name="title_map">Inicio</string>
     <string name="title_my_services">Mis servicios</string>
     <string name="title_nav_signout">Cerrar sesión</string>
+    <string name="confirmar_origin">Confirmar dirección</string>
 </resources>
