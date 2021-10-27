@@ -28,11 +28,12 @@
     </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewChat"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:divider="@color/white"
+        android:id="@+id/listChat"/>
 
 
     <LinearLayout
@@ -44,7 +45,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginEnd="10dp"
+            android:layout_margin="10dp"
             app:endIconMode="clear_text">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -60,6 +61,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:visibility="visible"
+            android:layout_margin="5dp"
             app:iconGravity="end"
             app:icon="@drawable/ic_menu_send" />
     </LinearLayout>

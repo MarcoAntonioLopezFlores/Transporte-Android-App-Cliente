@@ -40,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+
             android:orientation="horizontal">
 
             <ImageView
@@ -59,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+
                 android:layout_weight="5"
                 android:orientation="vertical">
 
@@ -85,6 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+
                 android:id="@+id/containerBtnChatService"
                 android:layout_weight="6"
                 android:visibility="gone"
@@ -98,6 +101,7 @@
                     android:visibility="visible"
                     android:layout_weight="5"
                     android:gravity="center"
+                    android:layout_margin="8dp"
                     android:textSize="10sp"
                     android:id="@+id/btnChatService"
                     tools:ignore="NestedWeights,SmallSp" />

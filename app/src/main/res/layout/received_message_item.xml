@@ -12,7 +12,7 @@
         android:background="@drawable/message_received_background"
         tools:ignore="UselessParent">
         <TextView
-            android:id="@+id/txtMessageReceived"
+            android:id="@+id/txtMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_received_message"
