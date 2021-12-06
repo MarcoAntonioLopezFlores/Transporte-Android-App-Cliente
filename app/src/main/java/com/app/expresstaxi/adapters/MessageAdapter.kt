@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.expresstaxi.R
 import com.app.expresstaxi.models.Message
+import com.app.expresstaxi.preferences.PrefsApplication
 
-class MessageAdapter(context:Context): BaseAdapter() {
-    var messages = ArrayList<Message>()
+class MessageAdapter(context:Context, var messages: ArrayList<Message>): BaseAdapter() {
     var context = context
 
     fun add(message:Message){
@@ -35,17 +35,17 @@ class MessageAdapter(context:Context): BaseAdapter() {
         var myView = view
 
         var messageInflater = LayoutInflater.from(context)
-        var message = messages[position].content
-        if(messages[position].idUser.equals("Me")){
+        var message = messages[position].descripcion
+        if(messages[position].usuario.id == PrefsApplication.prefs.getData("user_id").toLong()){
             myView = messageInflater.inflate(R.layout.sent_message_item, null)
             holder.textMessage = myView.findViewById(R.id.txtMessage)
 
-            holder.textMessage!!.setText(message)
+            holder.textMessage!!.text = message
         }else{
             myView = messageInflater.inflate(R.layout.received_message_item, null)
             holder.textMessage = myView.findViewById(R.id.txtMessage)
 
-            holder.textMessage!!.setText(message)
+            holder.textMessage!!.text = message
         }
 
         return  myView

@@ -19,7 +19,7 @@ class BottomSheetFindDriverFragment: BottomSheetDialogFragment() {
         val view = inflater.inflate(R.layout.bottom_sheet_find_driver, container, false)
         view.btnCancelFindDriver.setOnClickListener{
             //findNavController().navigate(R.id.detailsFragment)
-            startActivity(Intent(context, DetailsDriverFragment::class.java))
+            //startActivity(Intent(context, DetailsDriverFragment::class.java))
             this.dismiss()
 
         }

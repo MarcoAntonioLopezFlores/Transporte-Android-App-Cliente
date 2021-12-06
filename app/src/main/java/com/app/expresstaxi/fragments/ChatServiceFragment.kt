@@ -7,9 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.app.expresstaxi.R
 import com.app.expresstaxi.adapters.MessageAdapter
-import com.app.expresstaxi.dblocal.ConnectionDB
-import com.app.expresstaxi.models.Message
+import com.app.expresstaxi.models.*
+import com.app.expresstaxi.preferences.PrefsApplication
+import com.app.expresstaxi.utils.api.APIFirebase
+import com.app.expresstaxi.utils.api.APIService
+import com.app.expresstaxi.utils.api.RetrofitClient
 import kotlinx.android.synthetic.main.fragment_chat_service.*
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChatServiceFragment : AppCompatActivity() {
     private lateinit var messageAdapter:MessageAdapter
@@ -17,6 +24,9 @@ class ChatServiceFragment : AppCompatActivity() {
     companion object{
         var chatActive = false
     }
+    private val KEY = "AAAADYblWbE:APA91bF3zj6eBR1Hbl75OTVMd_k7dnR4znuw2BiNxY0iKrKRrP0ZNxnlDevqSbWeAdYmoyU-KJ8F3CKuFEB6CeDykvzDNe_P_JByhLl792zh40pcZXYzL--uPoJrSOI8MtdpUKcECVK2"
+    private var messageList = ArrayList<Message>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_chat_service)
@@ -26,71 +36,105 @@ class ChatServiceFragment : AppCompatActivity() {
 
 
         chatActive=true
-        messageAdapter = MessageAdapter(this)
-        listChat.adapter = messageAdapter
 
         btnSendMessage.setOnClickListener{
-            if(edtMessage.text.toString().trim().isNotEmpty()){
-                saveMessage(edtMessage.text.toString())
-                sendMessage(edtMessage.text.toString(), "Me")
+            if (edtMessage.text!!.isNotEmpty()){
+                sendMessage(edtMessage.text.toString())
             }else{
-                Toast.makeText(this, "Escribe algún mensaje", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ingrese un mensaje, por favor", Toast.LENGTH_LONG).show()
             }
-
-
         }
 
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(broadcast, IntentFilter(FILTER_CHAT))
 
-        getMessages()
+        listarMensajes()
     }
 
     val broadcast = object: BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
-            sendMessage(intent!!.getStringExtra("mensaje").toString(),"Driver")
+            listarMensajes()
         }
 
     }
 
-    private fun sendMessage(message:String, type:String){
-        messageAdapter.add(Message(message,type))
-        messageAdapter.notifyDataSetChanged()
+    private fun sendMessage(message:String){
+        val apiService: APIService = RetrofitClient.getAPIService()
+        val idUsuario = PrefsApplication.prefs.getData("user_id").toLong()
+        val idServicio = PrefsApplication.prefs.getData("servicio_id").toLong()
+        val correo = PrefsApplication.prefs.getData("correo")
 
+        val usuario = Usuario(idUsuario, "","",correo, "","","","",true, Rol(null, "",""))
+        val servicio = Servicio(idServicio, null, null, 0.0, 0.0, 0.0, 0.0, null, null, null)
+        val TOKEN = "Bearer ${PrefsApplication.prefs.getData("token")}"
 
-        listChat.setSelection(messageAdapter.count-1)
-        edtMessage.setText("")
-
-    }
-
-    private fun saveMessage(message:String){
-        val con = ConnectionDB(this)
-        val data = ContentValues()
-        data.put("message",message)
-        data.put("user", "Me")
-        data.put("seen",1)
-        if(con.registerData("chat",data)){
-            con.close()
-        }
-
-    }
-
-    fun getMessages(){
-        try{
-            val con = ConnectionDB(this)
-            val datos = con.getData("chat",
-                arrayOf("id","user","message"))
-            while(datos.moveToNext()){
-                println(datos.getString(1)+"---------------------"+datos.getString(2))
-                messageAdapter.add(Message(datos.getString(2),datos.getString(1)))
+        apiService.registrarMensaje(TOKEN, Message(null, message, null, usuario, servicio)).enqueue(object:
+            Callback<Message> {
+            override fun onResponse(call: Call<Message>, response: Response<Message>) {
+                if(response.isSuccessful){
+                    enviarmensaje(response.body() as Message)
+                    listarMensajes()
+                }
             }
-            messageAdapter.notifyDataSetChanged()
-            listChat.setSelection(messageAdapter.count-1)
-            datos.close()
 
-        }catch (e:Exception){
+            override fun onFailure(call: Call<Message>, t: Throwable) {
+                mostrarMensaje()
+            }
 
-        }
+        })
+    }
+
+    fun enviarmensaje(message: Message){
+        val apiFirebase: APIFirebase = RetrofitClient.getAPIFirebase()
+        val notificacion = Notificacion(PrefsApplication.prefs.getData("tokenconductorfb"), Datos(PrefsApplication.prefs.getData("servicio_id"), "Chat","Nuevo mensaje",message.descripcion))
+
+        apiFirebase.enviarNotificacion("key=$KEY", notificacion).enqueue(object:
+            Callback<JSONObject> {
+            override fun onResponse(
+                call: Call<JSONObject>,
+                response: Response<JSONObject>
+            ) {
+                if(response.isSuccessful){
+                    println("Se envió la notificación")
+                }
+            }
+
+            override fun onFailure(call: Call<JSONObject>, t: Throwable) {
+                mostrarMensaje()
+            }
+        })
+    }
+
+    fun listarMensajes(){
+        val apiService: APIService = RetrofitClient.getAPIService()
+        val idServicio = PrefsApplication.prefs.getData("servicio_id").toLong()
+        val TOKEN = "Bearer ${PrefsApplication.prefs.getData("token")}"
+
+        apiService.listarMensajes(TOKEN, idServicio).enqueue(object: Callback<List<Message>> {
+            override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
+                if(response.isSuccessful){
+                    asignarLista(response.body() as ArrayList<Message>)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Message>>, t: Throwable) {
+                mostrarMensaje()
+            }
+
+        })
+    }
+
+    fun asignarLista(messages: ArrayList<Message>){
+        messageList = messages
+        messageAdapter = MessageAdapter(this, messageList)
+        listChat.adapter = messageAdapter
+        edtMessage.setText("")
+        messageAdapter.notifyDataSetChanged()
+        listChat.setSelection(messageAdapter.count - 1)
+    }
+
+    fun mostrarMensaje(){
+        Toast.makeText(this, "Ocurrió un error, intente de nuevo", Toast.LENGTH_LONG).show()
     }
 
     override fun onStart() {
