@@ -5,6 +5,8 @@ import android.location.Location
 import android.os.Bundle
 import android.os.IBinder
 import android.preference.PreferenceManager
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -18,8 +20,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.app.expresstaxi.LoginActivity
 import com.app.expresstaxi.R
 import com.app.expresstaxi.databinding.ActivityNavigationDrawerBinding
+import com.app.expresstaxi.fragments.DetailsDriverFragment
+import com.app.expresstaxi.preferences.PrefsApplication
 import com.app.expresstaxi.utils.locationback.LocationUpdatesService
 import com.app.expresstaxi.utils.locationback.StatusLocation
+import kotlinx.android.synthetic.main.nav_header_navigation_drawer.*
+import kotlinx.android.synthetic.main.nav_header_navigation_drawer.view.*
 
 class NavigationDrawer : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener  {
 
@@ -44,6 +50,13 @@ class NavigationDrawer : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_container)
+        val view: View = navView.getHeaderView(0)
+        val txtEmail: TextView = view.findViewById(R.id.txtEmailUser)
+
+        if(PrefsApplication.prefs.getData("correo").isNotEmpty()){
+            val correo = PrefsApplication.prefs.getData("correo")
+            txtEmail.text = correo
+        }
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -73,6 +86,7 @@ class NavigationDrawer : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     }
 
     private fun signOut(){
+        PrefsApplication.prefs.deleteAll()
         val intent = Intent(this,LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
@@ -146,17 +160,21 @@ class NavigationDrawer : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         PreferenceManager.getDefaultSharedPreferences(this)
             .registerOnSharedPreferenceChangeListener(this)
 
+        if(PrefsApplication.prefs.getData("is_service").isNotEmpty()){
+            startActivity(Intent(this, DetailsDriverFragment::class.java))
+        }else{
+            if(mService != null){
+                setButtonsState(StatusLocation.requestingLocationUpdates(this))
+            }else{
+                setButtonsState(false)
+            }
+        }
+
 
 // Restore the state of the buttons when the activity (re)launches.
         //System.out.println("onStart" +mService.toString());
         //System.out.println("onStart -> "+ StatusLocation.requestingLocationUpdates(this));
 
-
-        if(mService != null){
-            setButtonsState(StatusLocation.requestingLocationUpdates(this))
-        }else{
-            setButtonsState(false)
-        }
 
         bindService(
             Intent(this, LocationUpdatesService::class.java), service,

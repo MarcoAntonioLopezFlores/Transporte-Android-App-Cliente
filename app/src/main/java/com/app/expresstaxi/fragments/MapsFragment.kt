@@ -1,6 +1,8 @@
 package com.app.expresstaxi.fragments
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
 
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -19,18 +21,35 @@ import kotlinx.android.synthetic.main.fragment_maps.*
 import kotlinx.android.synthetic.main.fragment_maps.view.*
 import java.util.*
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.widget.Toast
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.app.expresstaxi.R
+import com.app.expresstaxi.models.*
+import com.app.expresstaxi.preferences.PrefsApplication
 import com.app.expresstaxi.utils.LocationService
+import com.app.expresstaxi.utils.api.APIFirebase
+import com.app.expresstaxi.utils.api.APIService
+import com.app.expresstaxi.utils.api.RetrofitClient
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.Exception
 
 class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener{
     private lateinit var mMap: GoogleMap
     private lateinit var _latDestination:String
     private lateinit var _longDestination:String
+    private var latOrigin: Double = 0.0
+    private var longOrigin: Double = 0.0
+    private var latArrive: Double = 0.0
+    private var longArrive: Double = 0.0
     private var isLocationOriginConfirm = false
     private var isLocationToArriveConfirm= false
+    private val KEY = "AAAADYblWbE:APA91bF3zj6eBR1Hbl75OTVMd_k7dnR4znuw2BiNxY0iKrKRrP0ZNxnlDevqSbWeAdYmoyU-KJ8F3CKuFEB6CeDykvzDNe_P_JByhLl792zh40pcZXYzL--uPoJrSOI8MtdpUKcECVK2"
+    private val FILTRO_CHAT = "broadcast_confirmacion"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +66,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(punto,16.0f))
         }
 
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcast, IntentFilter(FILTRO_CHAT))
         return viewRoot
+    }
+
+    val broadcast = object: BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if(intent != null){
+                PrefsApplication.prefs.save("is_service", "true")
+                //startActivity(Intent(context, DetailsDriverFragment::class.java))
+            }
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,14 +88,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
 
         btnSearchDirectionOrigin.setOnClickListener{
             if(edtAddressOrigin.text.toString().trim().isNotEmpty()){
-                findLocation(edtAddressOrigin.text.toString())
+                findLocation(edtAddressOrigin.text.toString(), "Origin")
             }else{
                 Toast.makeText(context, "Es necesario ingresar una dirección", Toast.LENGTH_SHORT).show()
             }
         }
         btnSearchDirectionToArrive.setOnClickListener{
             if(edtAddressToArrive.text.toString().trim().isNotEmpty()){
-                findLocation(edtAddressToArrive.text.toString())
+                findLocation(edtAddressToArrive.text.toString(), "Arrive")
             }else{
                 Toast.makeText(context, "Es necesario ingresar una dirección", Toast.LENGTH_SHORT).show()
             }
@@ -78,6 +108,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
                 btnCancelDirectionOrigin.visibility = View.VISIBLE
                 btnSearchDirectionOrigin.visibility = View.GONE
                 edtAddressOrigin.isEnabled = false
+//                findLocation(edtAddressOrigin.text.toString(), "Origin")
             }else{
                 isLocationToArriveConfirm = true
                 btnConfirmDirection.visibility = View.GONE
@@ -85,7 +116,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
                 btnCancelDirectionToArrive.visibility = View.VISIBLE
                 btnSearchDirectionToArrive.visibility = View.GONE
                 edtAddressToArrive.isEnabled = false
-
+//                findLocation(edtAddressToArrive.text.toString(), "Arrive")
             }
         }
 
@@ -108,7 +139,31 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
 
         btnRequestService.setOnClickListener {
             if(edtAddressOrigin.text.toString().trim().isNotEmpty() && edtAddressToArrive.text.toString().trim().isNotEmpty()){
-                bottomSheetFragment.show(childFragmentManager, "bottomSheetFindDriver")
+                val apiService: APIService = RetrofitClient.getAPIService()
+
+                val idUsuario = PrefsApplication.prefs.getData("user_id").toLong()
+                val correo = PrefsApplication.prefs.getData("correo")
+                val estado = Estado(null, "Solicitado")
+                val usuario = Usuario(idUsuario, "","",correo, "","","","",true, Rol(null, "",""))
+                val localizacion = Localizacion(null, 0.0, 0.0)
+                val client = Cliente(null, null, usuario, localizacion)
+                val servicio = Servicio(null, null, null, latOrigin, longOrigin, latArrive, longArrive, estado, client, null)
+                val TOKEN = "Bearer ${PrefsApplication.prefs.getData("token")}"
+
+                apiService.registrarServicio(TOKEN, servicio).enqueue(object : Callback<Servicio>{
+                    override fun onResponse(call: Call<Servicio>, response: Response<Servicio>) {
+                        if(response.isSuccessful){
+                            val servicio = response.body() as Servicio
+                            PrefsApplication.prefs.save("servicio_id", servicio.id.toString())
+                            enviarNotificacion(servicio)
+                            bottomSheetFragment.show(childFragmentManager, "bottomSheetFindDriver")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Servicio>, t: Throwable) {
+                        mostrarMensaje()
+                    }
+                })
             }else{
                 Toast.makeText(context, "Es necesario ingresar 2 direcciones para solicitar un servicio", Toast.LENGTH_SHORT).show()
             }
@@ -116,11 +171,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
         }
     }
 
-    private fun findLocation(direccion:String){
+    private fun findLocation(direccion:String, tipo:String){
         try{
             val geocoder = Geocoder(activity, Locale.getDefault())
 
             val address = geocoder.getFromLocationName(direccion,5)
+
+            if(tipo == "Origin"){
+                latOrigin = address[0].latitude
+                longOrigin = address[0].longitude
+            }else{
+                latArrive = address[0].latitude
+                longArrive = address[0].longitude
+            }
 
             println("Lat: "+ address[0].latitude)
             println("Long: "+address[0].longitude)
@@ -193,5 +256,28 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
         return false
     }
 
+    private fun mostrarMensaje(){
+        Toast.makeText(context, "Ocurrió un error, intente de nuevo", Toast.LENGTH_LONG).show()
+    }
+
+    private fun enviarNotificacion(servicio: Servicio){
+        val apiFirebase: APIFirebase = RetrofitClient.getAPIFirebase()
+        val notificacion = Notificacion(PrefsApplication.prefs.getData("tokenconductorfb"), Datos(servicio.id!!.toString(), "Servicio","Solicitando servicio","Ingrese para aceptar el servicio"))
+
+        apiFirebase.enviarNotificacion("key=$KEY", notificacion).enqueue(object: Callback<JSONObject>{
+            override fun onResponse(
+                call: Call<JSONObject>,
+                response: Response<JSONObject>
+            ) {
+                if(response.isSuccessful){
+                    println("Se envió la notificación")
+                }
+            }
+
+            override fun onFailure(call: Call<JSONObject>, t: Throwable) {
+                mostrarMensaje()
+            }
+        })
+    }
 
 }

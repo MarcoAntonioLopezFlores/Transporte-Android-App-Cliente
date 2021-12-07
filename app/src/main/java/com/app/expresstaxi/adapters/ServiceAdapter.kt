@@ -9,12 +9,12 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.app.expresstaxi.R
-import com.app.expresstaxi.models.ServiceTrip
+import com.app.expresstaxi.models.Servicio
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 import java.time.format.DateTimeFormatter
 
-class ServiceAdapter(context: Context, items: List<ServiceTrip>) :
-    ArrayAdapter<ServiceTrip>(context, R.layout.item_service, items){
+class ServiceAdapter(context: Context, items: List<Servicio>) :
+    ArrayAdapter<Servicio>(context, R.layout.item_service, items){
 
     private  class AdapterListHolder{
         var date : TextView? = null
@@ -43,12 +43,12 @@ class ServiceAdapter(context: Context, items: List<ServiceTrip>) :
         }
         val elemento = getItem(position)
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-        val formatted = elemento!!.date.format(formatter)
+        val formatted = elemento!!.fechaRegistro.toString().format(formatter)
 
-        viewHolder.nameDriver!!.text = elemento.nameDriver
-        viewHolder.autoIdDriver!!.text = elemento.autoIdDriver
+        viewHolder.nameDriver!!.text = elemento.conductor!!.usuario.nombre
+        viewHolder.autoIdDriver!!.text = elemento.id.toString()
         viewHolder.date!!.text = formatted
-        viewHolder.ratingService!!.rating = elemento.calification.toFloat()
+        viewHolder.ratingService!!.rating = elemento.calificacion!!
 
         view!!.tag = viewHolder
         return view
