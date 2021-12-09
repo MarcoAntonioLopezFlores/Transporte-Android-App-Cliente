@@ -220,6 +220,19 @@
                 android:textSize="10sp"
                 android:id="@+id/btnChat"
                 tools:ignore="NestedWeights,SmallSp" />
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:iconGravity="textTop"
+                app:icon="@drawable/car"
+                android:text="Ubicación"
+                android:visibility="visible"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:layout_margin="8dp"
+                android:textSize="10sp"
+                android:id="@+id/btnLocConductor"
+                tools:ignore="NestedWeights,SmallSp" />
 
         </LinearLayout>
         <LinearLayout

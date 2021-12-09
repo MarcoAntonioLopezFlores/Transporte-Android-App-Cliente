@@ -45,6 +45,10 @@ interface APIService {
 
     @GET("servicio/listarByCliente/{id}")
     fun listarServicios(@Header("Authorization") token: String, @Path("id") id: Long): Call<List<Servicio>>
+
+    @GET("servicio/obtenerLocalizacionConductor/{id}")
+    fun obtenerUbicacionConductor(@Header("Authorization") token: String, @Path("id") id: Long): Call<Localizacion>
+
 }
 
 object ApiUtils {

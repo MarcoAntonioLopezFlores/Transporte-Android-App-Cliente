@@ -54,6 +54,10 @@ class DetailsDriverFragment:AppCompatActivity() {
 //            badgeDrawable.isVisible=false
 //        }
 
+        btnLocConductor.setOnClickListener{
+            startActivity(Intent(this,MapsActivity::class.java))
+        }
+
         btnChat.setOnClickListener {
             startActivity(Intent(this,ChatServiceFragment::class.java))
         }
