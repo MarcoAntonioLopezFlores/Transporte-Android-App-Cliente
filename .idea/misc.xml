@@ -3,10 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.2703125" />
         <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/activity_maps.xml" value="0.13541666666666666" />
         <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/activity_navigation_drawer.xml" value="0.11927083333333334" />
         <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
+        <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/activity_splash_screen.xml" value="0.36666666666666664" />
         <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/bottom_sheet_find_driver.xml" value="0.10520833333333333" />
+        <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/fragment_about.xml" value="0.33" />
         <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/fragment_calification_service.xml" value="0.234375" />
         <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/fragment_chat_service.xml" value="0.32864583333333336" />
         <entry key="..\:/Repositorio/Android/Movil/Transporte-Android-App-Cliente/app/src/main/res/layout/fragment_details_driver.xml" value="0.36666666666666664" />

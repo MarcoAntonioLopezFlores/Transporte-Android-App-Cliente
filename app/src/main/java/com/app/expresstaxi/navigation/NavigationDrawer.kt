@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.app.expresstaxi.AboutFragment
 import com.app.expresstaxi.LoginActivity
 import com.app.expresstaxi.R
 import com.app.expresstaxi.databinding.ActivityNavigationDrawerBinding
@@ -60,7 +61,7 @@ class NavigationDrawer : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.mapsFragment, R.id.myServicesTakenFragment
+                R.id.mapsFragment, R.id.myServicesTakenFragment, R.id.aboutFragment
             ), drawerLayout
         )
 

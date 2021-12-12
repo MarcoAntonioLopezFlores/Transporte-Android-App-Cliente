@@ -55,5 +55,10 @@
         android:name="com.app.expresstaxi.fragments.MyServicesTakenFragment"
         android:label="Mis servicios"
         tools:layout="@layout/fragment_my_services_taken" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.app.expresstaxi.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 
 </navigation>

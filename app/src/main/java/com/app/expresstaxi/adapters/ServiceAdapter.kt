@@ -46,7 +46,7 @@ class ServiceAdapter(context: Context, items: List<Servicio>) :
         val formatted = elemento!!.fechaRegistro.toString().format(formatter)
 
         viewHolder.nameDriver!!.text = elemento.conductor!!.usuario.nombre
-        viewHolder.autoIdDriver!!.text = elemento.id.toString()
+        viewHolder.autoIdDriver!!.text = elemento.conductor.vehiculo.placas
         viewHolder.date!!.text = formatted
         viewHolder.ratingService!!.rating = elemento.calificacion!!
 
