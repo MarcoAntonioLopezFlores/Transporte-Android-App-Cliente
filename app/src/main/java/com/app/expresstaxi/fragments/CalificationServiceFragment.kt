@@ -55,6 +55,7 @@ class CalificationServiceFragment : AppCompatActivity() {
         PrefsApplication.prefs.delete("is_service")
         PrefsApplication.prefs.delete("servicio_id")
         PrefsApplication.prefs.delete("avance")
+        PrefsApplication.prefs.delete("tokenconductorfb")
         startActivity(intent)
         finish()
     }

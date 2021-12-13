@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.app.expresstaxi.LoginActivity
 import com.app.expresstaxi.R
 import com.app.expresstaxi.models.Datos
 import com.app.expresstaxi.models.Estado
@@ -44,7 +45,10 @@ class DetailsDriverFragment:AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Detalles del servicio"
 
-        obtenerSevicio()
+        if(PrefsApplication.prefs.getData("correo").isEmpty()){
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
 
         badgeDrawable = BadgeDrawable.create(this)
 
@@ -82,11 +86,13 @@ class DetailsDriverFragment:AppCompatActivity() {
 
         when (avance) {
             "Llegada" -> {
+                obtenerSevicio()
                 btnStartService.visibility = View.VISIBLE
                 btnChat.visibility = View.GONE
                 btnCancelService.visibility = View.VISIBLE
             }
             "Inicio" -> {
+                obtenerSevicio()
                 btnStartService.visibility = View.GONE
                 btnFinishService.visibility = View.VISIBLE
                 btnCancelService.visibility = View.GONE
@@ -98,8 +104,10 @@ class DetailsDriverFragment:AppCompatActivity() {
             "Finalizar" -> {
                 finalizar()
             }
+            else -> {
+                obtenerSevicio()
+            }
         }
-
     }
 
 //    private val broadcast= object: BroadcastReceiver(){
@@ -143,6 +151,7 @@ class DetailsDriverFragment:AppCompatActivity() {
         PrefsApplication.prefs.delete("is_service")
         PrefsApplication.prefs.delete("servicio_id")
         PrefsApplication.prefs.delete("avance")
+        PrefsApplication.prefs.delete("tokenconductorfb")
         finish()
     }
 
@@ -182,6 +191,9 @@ class DetailsDriverFragment:AppCompatActivity() {
 
     fun llenarCampos(servicio: Servicio){
         if(servicio.id!! > 0){
+            if(PrefsApplication.prefs.getData("tokenconductorfb").isEmpty()){
+                PrefsApplication.prefs.save("tokenconductorfb", servicio.conductor!!.usuario.tokenfb!!)
+            }
             txtNameDriver.text = servicio.conductor!!.usuario.nombre
             txtLastnameDriver.text = servicio.conductor.usuario.apellidoPaterno + " " + servicio.conductor.usuario.apellidoMaterno
 

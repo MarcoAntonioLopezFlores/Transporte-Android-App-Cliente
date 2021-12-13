@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.app.expresstaxi.LoginActivity
 import com.app.expresstaxi.R
 import com.app.expresstaxi.adapters.MessageAdapter
 import com.app.expresstaxi.models.*
@@ -34,6 +35,10 @@ class ChatServiceFragment : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Chat"
 
+        if(PrefsApplication.prefs.getData("correo").isEmpty()){
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
 
         chatActive=true
 
@@ -64,7 +69,7 @@ class ChatServiceFragment : AppCompatActivity() {
         val idServicio = PrefsApplication.prefs.getData("servicio_id").toLong()
         val correo = PrefsApplication.prefs.getData("correo")
 
-        val usuario = Usuario(idUsuario, "","",correo, "","","","",true, Rol(null, "",""))
+        val usuario = Usuario(idUsuario, "","",correo, "","","","",true, Rol(null, "",""), null)
         val servicio = Servicio(idServicio, null, null, 0.0, 0.0, 0.0, 0.0, null, null, null)
         val TOKEN = "Bearer ${PrefsApplication.prefs.getData("token")}"
 
