@@ -47,7 +47,7 @@ class BottomSheetFindDriverFragment: BottomSheetDialogFragment() {
                 if(response.isSuccessful){
                     when (estado) {
                         "Cancelado" -> {
-                            notificar("Cancelar","Actualización del viaje","El cliente ha cancelado el viaje")
+                            consultarConductores()
                         }
                     }
                 }
@@ -59,34 +59,57 @@ class BottomSheetFindDriverFragment: BottomSheetDialogFragment() {
         })
     }
 
-    fun notificar(tipo: String, title: String, body: String){
-        val apiFirebase: APIFirebase = RetrofitClient.getAPIFirebase()
-        val notificacion = Notificacion(PrefsApplication.prefs.getData("tokenconductorfb"), Datos(PrefsApplication.prefs.getData("servicio_id"), tipo,title,body))
+    fun consultarConductores(){
+        val apiService: APIService = RetrofitClient.getAPIService()
+        val TOKEN = "Bearer ${PrefsApplication.prefs.getData("token")}"
 
-        apiFirebase.enviarNotificacion("key=$KEY", notificacion).enqueue(object: Callback<JSONObject>{
+        apiService.listarConductores(TOKEN).enqueue(object: Callback<List<Conductor>>{
             override fun onResponse(
-                call: Call<JSONObject>,
-                response: Response<JSONObject>
+                call: Call<List<Conductor>>,
+                response: Response<List<Conductor>>
             ) {
                 if(response.isSuccessful){
-                    when (tipo) {
-                        "Cancelar" -> {
-                            cancelar()
-                        }
-                    }
+                    notificar("Cancelar","Actualización del viaje","El cliente ha cancelado el viaje", response.body() as List<Conductor>)
                 }
             }
 
-            override fun onFailure(call: Call<JSONObject>, t: Throwable) {
+            override fun onFailure(call: Call<List<Conductor>>, t: Throwable) {
                 mostrarMensaje()
             }
         })
     }
 
+    fun notificar(tipo: String, title: String, body: String, conductores: List<Conductor>){
+        conductores.forEach { conductor ->
+            if (conductor.usuario.tokenfb != null){
+                val apiFirebase: APIFirebase = RetrofitClient.getAPIFirebase()
+                val notificacion = Notificacion(conductor.usuario.tokenfb, Datos(PrefsApplication.prefs.getData("servicio_id"), tipo,title,body))
+
+                apiFirebase.enviarNotificacion("key=$KEY", notificacion).enqueue(object: Callback<JSONObject>{
+                    override fun onResponse(
+                        call: Call<JSONObject>,
+                        response: Response<JSONObject>
+                    ) {
+                        if(response.isSuccessful){
+                            when (tipo) {
+                                "Cancelar" -> {
+                                    cancelar()
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JSONObject>, t: Throwable) {
+                        mostrarMensaje()
+                    }
+                })
+            }
+        }
+    }
+
     fun cancelar(){
         this.dismiss()
         PrefsApplication.prefs.delete("is_service")
-        PrefsApplication.prefs.delete("servicio_id")
         PrefsApplication.prefs.delete("avance")
     }
 

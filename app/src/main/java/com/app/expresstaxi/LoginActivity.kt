@@ -77,19 +77,17 @@ class LoginActivity : AppCompatActivity() {
             PrefsApplication.prefs.save("tokenfb", token.toString())
 
             val apiService: APIService = RetrofitClient.getAPIService()
-            val tokenObjeto = Token(null, token.toString(), "Cliente")
+            val usuarioRead = UsuarioRead(null, PrefsApplication.prefs.getData("correo"), null, token.toString())
 
-            apiService.registrarToken(tokenObjeto).enqueue(object: Callback<Token>{
-                override fun onResponse(call: Call<Token>, response: Response<Token>) {
-                    if(response.isSuccessful){
-                        obtenerToken()
-                    }
+            apiService.registrarToken(usuarioRead).enqueue(object: Callback<UsuarioRead>{
+                override fun onResponse(call: Call<UsuarioRead>, response: Response<UsuarioRead>) {
+//                    val usuario = response.body() as UsuarioRead
+//                    PrefsApplication.prefs.save("tokenfb", usuario.tokenfb.toString())
                 }
 
-                override fun onFailure(call: Call<Token>, t: Throwable) {
-                    println("No se registró el token")
+                override fun onFailure(call: Call<UsuarioRead>, t: Throwable) {
+                    println("no Se realizó")
                 }
-
             })
         })
     }

@@ -40,7 +40,7 @@ class RegisterActivity : AppCompatActivity() {
                     }else{
                         apellidoP = lastName[0]
                     }
-                    val usuario = Usuario(null, edtPassword.text.toString(), edtPhone.text.toString(), edtEmail.text.toString(), edtName.text.toString(), apellidoP, apellidoM, "", true, rol)
+                    val usuario = Usuario(null, edtPassword.text.toString(), edtPhone.text.toString(), edtEmail.text.toString(), edtName.text.toString(), apellidoP, apellidoM, "", true, rol, null)
                     val localizacion = Localizacion(null, 0.0, 0.0)
 
                     apiService.registrarCliente(Cliente(null, null, usuario, localizacion)).enqueue(object: Callback<Cliente>{

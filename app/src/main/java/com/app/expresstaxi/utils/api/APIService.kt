@@ -10,9 +10,9 @@ interface APIService {
     @Headers("Content-Type: application/json")
     fun login(@Body auth: Auth): Call<JwtResponse>
 
-    @POST("auth/token")
+    @POST("auth/actualizarToken")
     @Headers("Content-Type: application/json")
-    fun registrarToken(@Body token: Token): Call<Token>
+    fun registrarToken(@Body usuarioRead: UsuarioRead): Call<UsuarioRead>
 
     @POST("cliente/registrar")
     @Headers("Content-Type: application/json")
@@ -48,6 +48,9 @@ interface APIService {
 
     @GET("servicio/obtenerLocalizacionConductor/{id}")
     fun obtenerUbicacionConductor(@Header("Authorization") token: String, @Path("id") id: Long): Call<Localizacion>
+
+    @GET("conductor/listar")
+    fun listarConductores(@Header("Authorization") token: String): Call<List<Conductor>>
 
 }
 

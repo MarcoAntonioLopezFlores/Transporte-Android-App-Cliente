@@ -26,7 +26,9 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.app.expresstaxi.LoginActivity
 import com.app.expresstaxi.R
+import com.app.expresstaxi.adapters.ServiceAdapter
 import com.app.expresstaxi.models.*
 import com.app.expresstaxi.navigation.NavigationDrawer
 import com.app.expresstaxi.preferences.PrefsApplication
@@ -35,6 +37,7 @@ import com.app.expresstaxi.utils.api.APIFirebase
 import com.app.expresstaxi.utils.api.APIService
 import com.app.expresstaxi.utils.api.RetrofitClient
 import kotlinx.android.synthetic.main.fragment_details_driver.*
+import kotlinx.android.synthetic.main.fragment_my_services_taken.view.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -67,6 +70,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(punto))
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(punto,16.0f))
+        }
+
+        if(PrefsApplication.prefs.getData("correo").isEmpty()){
+            startActivity(Intent(context, LoginActivity::class.java))
         }
 
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcast, IntentFilter(FILTRO_CHAT))
@@ -147,7 +154,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
                 val idUsuario = PrefsApplication.prefs.getData("user_id").toLong()
                 val correo = PrefsApplication.prefs.getData("correo")
                 val estado = Estado(null, "Solicitado")
-                val usuario = Usuario(idUsuario, "","",correo, "","","","",true, Rol(null, "",""))
+                val usuario = Usuario(idUsuario, "","",correo, "","","","",true, Rol(null, "",""), null)
                 val localizacion = Localizacion(null, 0.0, 0.0)
                 val client = Cliente(null, null, usuario, localizacion)
                 val servicio = Servicio(null, null, null, latOrigin, longOrigin, latArrive, longArrive, estado, client, null)
@@ -264,23 +271,47 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButto
     }
 
     private fun enviarNotificacion(servicio: Servicio){
-        val apiFirebase: APIFirebase = RetrofitClient.getAPIFirebase()
-        val notificacion = Notificacion(PrefsApplication.prefs.getData("tokenconductorfb"), Datos(servicio.id!!.toString(), "Servicio","Solicitando servicio","Ingrese para aceptar el servicio"))
+        val apiService: APIService = RetrofitClient.getAPIService()
+        val TOKEN = "Bearer ${PrefsApplication.prefs.getData("token")}"
 
-        apiFirebase.enviarNotificacion("key=$KEY", notificacion).enqueue(object: Callback<JSONObject>{
+        apiService.listarConductores(TOKEN).enqueue(object: Callback<List<Conductor>>{
             override fun onResponse(
-                call: Call<JSONObject>,
-                response: Response<JSONObject>
+                call: Call<List<Conductor>>,
+                response: Response<List<Conductor>>
             ) {
                 if(response.isSuccessful){
-                    println("Se envió la notificación")
+                    notificar(servicio, response.body() as List<Conductor>)
                 }
             }
 
-            override fun onFailure(call: Call<JSONObject>, t: Throwable) {
+            override fun onFailure(call: Call<List<Conductor>>, t: Throwable) {
                 mostrarMensaje()
             }
         })
+    }
+
+    private fun notificar(servicio: Servicio, conductores: List<Conductor>){
+        conductores.forEach { conductor ->
+            if(conductor.usuario.tokenfb != null){
+                val apiFirebase: APIFirebase = RetrofitClient.getAPIFirebase()
+                val notificacion = Notificacion(conductor.usuario.tokenfb, Datos(servicio.id!!.toString(), "Servicio","Solicitando servicio","Ingrese para aceptar el servicio"))
+
+                apiFirebase.enviarNotificacion("key=$KEY", notificacion).enqueue(object: Callback<JSONObject>{
+                    override fun onResponse(
+                        call: Call<JSONObject>,
+                        response: Response<JSONObject>
+                    ) {
+                        if(response.isSuccessful){
+                            println("Se envió la notificación")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JSONObject>, t: Throwable) {
+                        mostrarMensaje()
+                    }
+                })
+            }
+        }
     }
 
 }

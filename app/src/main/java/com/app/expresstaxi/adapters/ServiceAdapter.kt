@@ -42,11 +42,11 @@ class ServiceAdapter(context: Context, items: List<Servicio>) :
             viewHolder = view.tag as AdapterListHolder
         }
         val elemento = getItem(position)
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-        val formatted = elemento!!.fechaRegistro.toString().format(formatter)
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")
+        val formatted = elemento!!.fechaRegistro.toString().format("dd/MM/yyyy hh:mm a")
 
-        viewHolder.nameDriver!!.text = elemento.conductor!!.usuario.nombre
-        viewHolder.autoIdDriver!!.text = elemento.conductor.vehiculo.placas
+        viewHolder.nameDriver!!.text = if(elemento.conductor != null) elemento.conductor.usuario.nombre else ""
+        viewHolder.autoIdDriver!!.text = if(elemento.conductor != null)  elemento.conductor.vehiculo.placas else "Cancelado"
         viewHolder.date!!.text = formatted
         viewHolder.ratingService!!.rating = elemento.calificacion!!
 
