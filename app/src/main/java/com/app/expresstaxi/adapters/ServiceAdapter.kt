@@ -11,6 +11,8 @@ import androidx.annotation.RequiresApi
 import com.app.expresstaxi.R
 import com.app.expresstaxi.models.Servicio
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class ServiceAdapter(context: Context, items: List<Servicio>) :
@@ -21,6 +23,7 @@ class ServiceAdapter(context: Context, items: List<Servicio>) :
         var ratingService: MaterialRatingBar? = null
         var nameDriver: TextView? = null
         var autoIdDriver:TextView? = null
+        var estado:TextView? = null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,18 +40,20 @@ class ServiceAdapter(context: Context, items: List<Servicio>) :
             viewHolder.autoIdDriver = view.findViewById(R.id.txtDriverAutoIdService) as TextView
             viewHolder.ratingService = view.findViewById(R.id.txtCalificationService) as MaterialRatingBar
             viewHolder.date = view.findViewById(R.id.txtServiceDate) as TextView
+            viewHolder.estado = view.findViewById(R.id.textEstado) as TextView
 
         }else{
             viewHolder = view.tag as AdapterListHolder
         }
         val elemento = getItem(position)
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")
-        val formatted = elemento!!.fechaRegistro.toString().format("dd/MM/yyyy hh:mm a")
+        val format = SimpleDateFormat("dd/MM/yyyy hh:mm a")
+        val formatted = format.format(elemento!!.fechaRegistro)
 
         viewHolder.nameDriver!!.text = if(elemento.conductor != null) elemento.conductor.usuario.nombre else ""
-        viewHolder.autoIdDriver!!.text = if(elemento.conductor != null)  elemento.conductor.vehiculo.placas else "Cancelado"
+        viewHolder.autoIdDriver!!.text = if(elemento.conductor != null)  elemento.conductor.vehiculo.placas else "Sin placas"
         viewHolder.date!!.text = formatted
         viewHolder.ratingService!!.rating = elemento.calificacion!!
+        viewHolder.estado!!.text = elemento.estado!!.descripcion
 
         view!!.tag = viewHolder
         return view
