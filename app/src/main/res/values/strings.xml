@@ -36,6 +36,7 @@
     <string name="chat">Chat</string>
     <string name="details_auto">Detalles del auto</string>
     <string name="id_auto">14XCV23</string>
+    <string name="estado">Estado: </string>
     <string name="name_model_auto">Nissan Mazda</string>
     <string name="color_auto">Naranja</string>
     <string name="details_trip">Detalles del viaje</string>
