@@ -94,33 +94,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     fun obtenerLocalizacionConductor() {
         val apiService: APIService = RetrofitClient.getAPIService()
-        val id = PrefsApplication.prefs.getData("servicio_id").toLong()
-        val TOKEN = "Bearer ${PrefsApplication.prefs.getData("token")}"
-        println("latitud id service:"+id)
-        CoroutineScope(Dispatchers.IO).launch {
-        apiService.obtenerUbicacionConductor(TOKEN, id).enqueue(object: Callback<Localizacion> {
-            override fun onResponse(call: Call<Localizacion>, response: Response<Localizacion>) {
-                runOnUiThread {
-                if(response.isSuccessful){
-                    var localizacion = response.body() as Localizacion
-                    println("latitud conductor obtenida: "+localizacion.latitud)
-                    var punto = LatLng(localizacion.latitud,
-                        localizacion.longitud)
+        try{
+            val id = PrefsApplication.prefs.getData("servicio_id").toLong()
+            val TOKEN = "Bearer ${PrefsApplication.prefs.getData("token")}"
+            println("latitud id service:"+id)
+            CoroutineScope(Dispatchers.IO).launch {
+                apiService.obtenerUbicacionConductor(TOKEN, id).enqueue(object: Callback<Localizacion> {
+                    override fun onResponse(call: Call<Localizacion>, response: Response<Localizacion>) {
+                        runOnUiThread {
+                            if(response.isSuccessful){
+                                var localizacion = response.body() as Localizacion
+                                println("latitud conductor obtenida: "+localizacion.latitud)
+                                var punto = LatLng(localizacion.latitud,
+                                    localizacion.longitud)
 
-                    mMap.addMarker(MarkerOptions().position(punto).title("Conductor"))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(punto))
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(punto,16.0f))
-                }
-                }
+                                mMap.addMarker(MarkerOptions().position(punto).title("Conductor"))
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(punto))
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(punto,16.0f))
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Localizacion>, t: Throwable) {
+                        println("latitud conductor no obtenida")
+                        //Toast.makeText(applicationContext, "Algo salio mal", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
             }
+        }catch (e:Exception){
 
-            override fun onFailure(call: Call<Localizacion>, t: Throwable) {
-                println("latitud conductor no obtenida")
-                //Toast.makeText(applicationContext, "Algo salio mal", Toast.LENGTH_SHORT).show()
-            }
-
-        })
         }
+
     }
 
 }

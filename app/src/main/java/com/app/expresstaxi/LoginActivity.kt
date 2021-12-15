@@ -52,10 +52,13 @@ class LoginActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<JwtResponse>, response: Response<JwtResponse>) {
                         if(response.isSuccessful){
                             login(response.body() as JwtResponse)
+                        }else{
+                            Toast.makeText(applicationContext, "Correo o contraseña no valida, intente de nuevo", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun onFailure(call: Call<JwtResponse>, t: Throwable) {
+                        println("Entro con una cuenta no valida")
                         mostrarMensaje()
                     }
                 })
