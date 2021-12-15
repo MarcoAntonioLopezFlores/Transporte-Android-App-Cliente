@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorPrimaryVariant"
+    android:gravity="center"
+    android:scrollbars="none"
+    android:padding="15dp"
+    tools:context=".MyProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?attr/colorPrimaryVariant"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            
+            android:textSize="40sp"
+            android:textColor="#FFF"
+            android:fontFamily="sans-serif-black"
+            android:text="Nombre"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#FFF"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-black"
+            android:id="@+id/txtNameProfile"
+            android:text="Marco Antonio"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="40sp"
+            android:textColor="#FFF"
+            android:fontFamily="sans-serif-black"
+            android:text="Apellidos"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#FFF"
+            android:layout_marginTop="10dp"
+            android:id="@+id/txtLastnameProfile"
+            android:fontFamily="sans-serif-black"
+            android:text="López Flores"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="40sp"
+            android:textColor="#FFF"
+            android:fontFamily="sans-serif-black"
+            android:text="Correo"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#FFF"
+            android:layout_marginTop="10dp"
+            android:id="@+id/txtEmailProfile"
+            android:fontFamily="sans-serif-black"
+            android:text="marco@gmail.com"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="40sp"
+            android:textColor="#FFF"
+            android:fontFamily="sans-serif-black"
+            android:text="Telefono"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#FFF"
+            android:layout_marginTop="10dp"
+            android:id="@+id/txtTelephoneProfile"
+            android:fontFamily="sans-serif-black"
+            android:text="7772562421"/>
+
+    </LinearLayout>
+
+</ScrollView>

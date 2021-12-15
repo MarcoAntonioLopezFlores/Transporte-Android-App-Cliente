@@ -54,9 +54,15 @@ class MyServicesTakenFragment : Fragment() {
                 if(response.isSuccessful){
                     viewRoot.linear.visibility = View.GONE
                     services = response.body() as ArrayList<Servicio>
-                    val myAdapterServices = activity?.let { ServiceAdapter(it,services) }
-                    viewRoot.listMyServices.adapter = myAdapterServices
-                    myAdapterServices!!.notifyDataSetChanged()
+                    if(services.isNullOrEmpty()){
+                        viewRoot.imageEmpty.visibility = View.VISIBLE
+                    }else{
+                        val myAdapterServices = activity?.let { ServiceAdapter(it,services) }
+                        viewRoot.listMyServices.adapter = myAdapterServices
+                        myAdapterServices!!.notifyDataSetChanged()
+                    }
+
+
                 }
             }
 

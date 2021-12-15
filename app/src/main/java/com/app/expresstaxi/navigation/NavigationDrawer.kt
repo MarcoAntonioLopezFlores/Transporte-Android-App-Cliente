@@ -61,7 +61,7 @@ class NavigationDrawer : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.mapsFragment, R.id.myServicesTakenFragment, R.id.aboutFragment
+                R.id.mapsFragment, R.id.myServicesTakenFragment, R.id.myProfileFragment,R.id.aboutFragment
             ), drawerLayout
         )
 

@@ -16,6 +16,11 @@
             android:title="@string/title_my_services" />
 
         <item
+            android:id="@+id/myProfileFragment"
+            android:icon="@drawable/ic_account_circle"
+            android:title="Mi perfil" />
+
+        <item
             android:id="@+id/aboutFragment"
             android:icon="@drawable/ic_baseline_info_24"
             android:title="@string/about" />
